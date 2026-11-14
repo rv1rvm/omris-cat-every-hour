@@ -345,16 +345,16 @@ async function sendCat() {
 
   addLog('Requesting random cat...');
 
- const response = await fetch(
-  `https://api.github.com/repos/${env.GITHUB_REPO}/contents/cats`,
-  {
-    headers: {
-      "User-Agent": "CatSpam",
-      "Authorization": `Bearer ${env.GITHUB_TOKEN}`,
-      "Accept": "application/vnd.github+json"
-    }
-  }
-);
+  try {
+
+    const response = await fetch(API_URL + '/send', {
+      method: 'POST',
+
+      headers: {
+        'Authorization': 'Bearer ' + adminToken
+      }
+    });
+
     const data = await response.json();
 
     if (!response.ok || !data.success) {
