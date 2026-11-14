@@ -1,0 +1,34 @@
+
+name: Hourly Cat Spam
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  send-cat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get cat pictures
+        uses: actions/checkout@v4
+
+      - name: Send random cat
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          shopt -s nullglob
+          cats=(cats/*.jpg cats/*.jpeg cats/*.png cats/*.webp)
+
+          if [ ${#cats[@]} -eq 0 ]; then
+            echo "No cat pictures found"
+            exit 1
+          fi
+
+          cat="${cats[$RANDOM % ${#cats[@]}]}"
+
+          curl -H "Content-Type: multipart/form-data" \
+            -F 'payload_json={"content":"MEOW. hourly cat delivery"}' \
+            -F "files[0]=@$cat" \
+            "$DISCORD_WEBHOOK"
