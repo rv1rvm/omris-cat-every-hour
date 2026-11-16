@@ -29,6 +29,6 @@ jobs:
           cat="${cats[$RANDOM % ${#cats[@]}]}"
 
           curl -H "Content-Type: multipart/form-data" \
-            -F 'payload_json={"content":"MEOW. hourly cat delivery"}' \
+            -F 'payload_json={"content":"hourly cat devilvery OwO"}' \
             -F "files[0]=@$cat" \
             "$DISCORD_WEBHOOK"
